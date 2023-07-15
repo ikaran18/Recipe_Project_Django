@@ -1,0 +1,54 @@
+{% extends 'base.html' %} {% block content %}
+<title>Home | RecipeMania</title>
+
+
+<div class="container shadow p-3 mt-5">
+  <h1 class="mt-5">List of Recipes</h1>
+  <hr />
+  <div class="row mt-5">
+    {% for recipe in recipes %}
+    <div class="col-lg-4 p-3">
+      <div class="card" style="width: 18rem">
+        <img
+          class="card-img-top"
+          src="/media/{{recipe.recipe_image}}"
+          alt="Card image cap"
+          height="250px;"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{recipe.recipe_name}}</h5>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the
+            bulk of the card's content.
+          </p>
+          {% if user.is_superuser %}
+          <a href="{% url 'update' recipe.id %}" class="btn btn-warning btn-sm"
+            >Edit</a
+          >
+          <a
+            ><form
+              action="{% url 'delete' recipe.id %}"
+              method="POST"
+              class="d-inline"
+            >
+              {% csrf_token %}
+              <input
+                type="submit"
+                value="Delete"
+                class="btn btn-danger btn-sm"
+              /></form
+          ></a>
+          {% endif %}
+          <a
+            href="{% url 'readmore' recipe.id %}"
+            class="btn btn-primary btn-sm"
+            >Read more</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}
